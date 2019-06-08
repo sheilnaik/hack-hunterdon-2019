@@ -1,0 +1,14 @@
+{
+	"name": "EasyEthics",
+	"manifest_version" : 2,
+	"version": "0.1",
+	"content_scripts": [
+		{
+			"matches": [
+			  "https://www.amazon.com/*", 
+			  "http://www.amazon.com/*"
+			],
+		"js": ["jquery-3.4.0.min.js","content.js"]
+		}
+	]
+}
