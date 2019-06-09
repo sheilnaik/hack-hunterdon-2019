@@ -90,4 +90,48 @@ def banned_company():
         return 'False', 200
 
 
+@app.route('/add_rating', methods=['POST'])
+def add_rating():
+    db = mysql.connector.connect(
+        host="easyethics.ccecgtqyo5kq.us-east-1.rds.amazonaws.com",
+        user=os.environ['DB_USERNAME'],
+        passwd=os.environ['DB_PASSWORD'],
+        database="easyethics"
+    )
+    cursor = db.cursor()
+
+    # TODO: Add single sign-on to determine User ID
+    user_id = 3
+
+    company_name = request.args.get('company_name', type=str)
+    violation = request.args.get('violation', type=str)
+    comments = request.args.get('comments', type=str)
+
+    query = """
+    SELECT id FROM companies
+    WHERE UPPER(name) = '{company_name}'
+    LIMIT 1;
+    """.format(
+        company_name=company_name.upper()
+    )
+
+    cursor.execute(query)
+    company_id = cursor.fetchall()[0][0]
+
+    query = """
+    INSERT INTO ratings (user, company, rating, comments)
+    VALUES ({user_id}, {company_id}, '{violation}', '{comments}')
+    """.format(
+        user_id=user_id,
+        company_id=company_id,
+        violation=violation,
+        comments=comments
+    )
+
+    cursor.execute(query)
+    db.commit()
+
+    return '', 200
+
+
 app.run(host='0.0.0.0', port=80)
