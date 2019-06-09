@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS, cross_orogin
+from flask_cors import CORS, cross_origin
 import mysql.connector
 import os
 import json
@@ -28,7 +28,7 @@ class Company(Resource):
         FROM companies c
         JOIN ratings r
         ON c.id = r.company
-        WHERE UPPER(c.name) = {company_name}
+        WHERE UPPER(c.name) = '{company_name}'
         GROUP BY c.name, r.rating
         """.format(
             company_name=company
