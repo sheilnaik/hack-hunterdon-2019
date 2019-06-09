@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="popup.css">
+    <title>Easy Ethics</title>
+    <script src="popup.js"></script>     
+  </head>
+  <body>   
+  	<div id="title">EasyEthics</div>     
+    <div id="wrapper">    
+        <form onsubmit="return confirm('Are you sure?');">
+        	Company name:<br>
+        	<input type="text" name="companyname"><br>
+        	Reason:<br>
+        	<select>
+        		<option value="animal abuse">Animal Abuse</option>
+        		<option value="labor ethics">Labor Ethics</option>
+        		<option value="pollution/environment">Pollution/Environment</option>
+        		<option value="conflict materials">Conflict Materials</option>
+        		<option value="social issues">Social Issues</option>
+        		<option value="genetic engineering">Genetic Engineering</option>
+        	</select>
+        	Comments:
+        	<input type="text" name="Comments">
+        	<input type="submit" name="submit">
+        </form>
+    </div>      
+
+  </body>
+</html>
