@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse
 import mysql.connector
 import os
 import json
+import urllib.parse
 
 app = Flask(__name__)
 api = Api(app)
@@ -104,8 +105,8 @@ def add_rating():
     user_id = 3
 
     company_name = request.args.get('company_name', type=str)
-    violation = request.args.get('violation', type=str)
-    comments = request.args.get('comments', type=str)
+    violation = urllib.parse.unquote(request.args.get('violation', type=str))
+    comments = urllib.parse.unquote(request.args.get('comments', type=str))
 
     query = """
     SELECT id FROM companies
