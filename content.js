@@ -7,6 +7,7 @@ console.log(current_url)
 // });
 
 //injection of our warning badge into divs
+function showBadge() {
 var suggest = document.createTextNode("Consider these alternate, less problematic products");
 var dealDiv = document.getElementById("unifiedPrice_feature_div")
 var btn  = document.createElement("BUTTON");
@@ -63,21 +64,25 @@ if (featureDiv !== null){
     }
 });
 }
+}
 
-
-
+var badgeShown = false;
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse){
 		console.log("getting: " + request);
-        jay = JSON.parse(request);
-        //working off read                                                   ;
-		document.getElementById("dropdown").innerHTML = "<a href="+jay["one"][0]+">"+jay["one"][1]+"</a>" + "<br>"
-            +"<a href="+jay["two"][0]+">"+jay["two"][1]+"</a>"+"<br>" + "<a href="+jay["three"][0]+">"+jay["three"][1]+"</a>";
+        if (request === "True" && badgeShown === false){
+            showBadge();
+            badgeShown = true;
+        }
+  //       jay = JSON.parse(request);
+  //       //working off read                                                   ;
+		// document.getElementById("dropdown").innerHTML = "<a href="+jay["one"][0]+">"+jay["one"][1]+"</a>" + "<br>"
+  //           +"<a href="+jay["two"][0]+">"+jay["two"][1]+"</a>"+"<br>" + "<a href="+jay["three"][0]+">"+jay["three"][1]+"</a>";
         //hardcoded for show
-        // document.getElementById("dropdown").innerHTML = "<a href=https://google.com>Evian Spring Water</a>" + "<br>" +
-        //     "<a href=https://google.com>Liquid Death Mountain Water</a>" + "<br>" +"<a href=https://google.com>Polan Spring</a>" + "<br>";
-        // sendResponse({farewell:"goodbye"});
+        document.getElementById("dropdown").innerHTML = "<a href=https://google.com>Folgers</a>" + "<br>" +
+            "<a href=https://google.com>Blue Mountain</a>" + "<br>" +"<a href=https://www.amazon.com/Lavazza-4202A-Pound-Super-Espresso/dp/B0002E2FH0/ref=sxin_2_ac_d_rm?keywords=coffee+beans&pd_rd_i=B0002E2FH0&pd_rd_r=ddce6405-5c80-4a18-807d-b847c29f406a&pd_rd_w=HsKAl&pd_rd_wg=sp43V&pf_rd_p=91b604bb-c371-4573-970f-bed68a552852&pf_rd_r=H8BARCBNXGGPYJHHFWNP&qid=1560082248&s=gateway>Lavazza</a>" + "<br>";
+        sendResponse({farewell:"goodbye"});
 	}
 );
 

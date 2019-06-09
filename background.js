@@ -1,8 +1,8 @@
 //background.js
 
 
-function requestServer(){
-	$.get( "https://ericjschneider.com/hh", function( data ) {
+function requestServer(myUrl){
+	$.post( "http://ericjschneider.com:8080", myUrl, function( data ) {
   	$( ".result" ).html( data );
   	console.log( "Load was performed: " + data);
  	 myCallback(data);
@@ -33,7 +33,7 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 }, function(tabs) {
   var tab = tabs[0];
   var url = tab.url;
-    requestServer();
+    requestServer(url);
   console.log(url);
 
 });
