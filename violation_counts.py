@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_orogin
 import mysql.connector
 import os
+import json
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -18,68 +19,42 @@ class Company(Resource):
             passwd=os.environ['DB_PASSWORD'],
             database="easyethics"
         )
-
         cursor = db.cursor()
 
         company = company.upper()
 
-        query = "SELECT COUNT(*) FROM easyethics.companies WHERE UPPER(name) LIKE '%{company_name}%'".format(
+        query = """
+        SELECT c.name, r.rating, COUNT(r.rating) as violation_count
+        FROM companies c
+        JOIN ratings r
+        ON c.id = r.company
+        WHERE UPPER(c.name) = {company_name}
+        GROUP BY c.name, r.rating
+        """.format(
             company_name=company
         )
 
         cursor.execute(query)
 
-        myresult = cursor.fetchall()
-        name = myresult[0][0]
+        result = cursor.fetchall()
 
-        cursor.close()
-        db.close()
-
-        return name, 200
-
-    def post(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument("age")
-        parser.add_argument("occupation")
-        args = parser.parse_args()
-
-        for user in users:
-            if(name == user["name"]):
-                return "User with name {} already exists".format(name), 400
-
-        user = {
-            "name": name,
-            "age": args["age"],
-            "occupation": args["occupation"]
+        api_result = {
+            'company': {
+                'name': result[0][0],
+                'violations': []
+            }
         }
-        users.append(user)
-        return user, 201
 
-    def put(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument("age")
-        parser.add_argument("occupation")
-        args = parser.parse_args()
+        for r in result:
+            print(r)
+            api_result['company']['violations'].append({
+                'violation_name': r[1],
+                'violation_count': r[2]
+            })
 
-        for user in users:
-            if(name == user["name"]):
-                user["age"] = args["age"]
-                user["occupation"] = args["occupation"]
-                return user, 200
-
-        user = {
-            "name": name,
-            "age": args["age"],
-            "occupation": args["occupation"]
-        }
-        users.append(user)
-        return user, 201
-
-    def delete(self, name):
-        global users
-        users = [user for user in users if user["name"] != name]
-        return "{} is deleted.".format(name), 200
+        json_result = json.dumps(api_result)
+        return json_result, 200
 
 api.add_resource(Company, "/company/<string:company>")
 
-app.run(debug=True)
+app.run(host='0.0.0.0', port=80)
