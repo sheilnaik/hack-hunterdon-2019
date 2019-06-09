@@ -64,24 +64,30 @@ def banned_company():
     cursor = db.cursor()
 
     user_id = request.args.get('user_id', type=int)
-    company_id = request.args.get('company_id', type=int)
+    company_name = request.args.get('company_name', type=str).upper()
 
     query = """
-    SELECT COUNT(*)
-    FROM easyethics.ratings
-    WHERE user = {user_id} and company = {company_id};
+    SELECT
+        *
+    FROM
+        ratings r
+    JOIN companies c
+    ON r.company = c.id
+    WHERE
+        r.user = {user_id} AND UPPER(c.name) = '{company_name}';
     """.format(
         user_id=user_id,
-        company_id=company_id
+        company_name=company_name
     )
 
     cursor.execute(query)
 
     result = cursor.fetchall()
-    if result[0][0] > 0:
+    print(result)
+    if len(result) > 0:
         return 'True', 200
     else:
-        return 'False'
+        return 'False', 200
 
 
 app.run(host='0.0.0.0', port=80)
