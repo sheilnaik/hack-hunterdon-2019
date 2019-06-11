@@ -1,9 +1,9 @@
-## HackHunterdon2019
+# HackHunterdon2019
 Hack Hunterdon 6/8-6/9 2019\
 **Voted as a Finalist by the Judges**
 
 
-# The Idea
+## The Idea
 For this hackathon, the idea was to create a project that would assist the user in 
 "voting with their dollar". The whole idea behind this is to support companies with favorable
 business practices by spending your money at these companies. We wanted to create a way for users
@@ -11,7 +11,7 @@ to be not only mindful about any unethical practices a company may be apart of, 
 problematic companies. We decided to target the largest online retailer as our platform for our application:
 Amazon. From there we figured out how to implement this idea.
 
-# The Implementation
+## The Implementation
 This project was split up into smaller to work on pieces that would eventually come together in the end to
 represent the final project. The pieces that this project was broken into are listed below:
 * Chrome Extension and HTML Injection
@@ -45,7 +45,7 @@ This system was finished, but never implemented into the final build of this pro
 We ended up with an algorithim comparing user bans with similair products on Amazon to come up with a final recommendation of a project that
 was then sent back to the chrome extension to be injected into the page.
 
-# Tools we Used
+## Tools we Used
 * Javascript/NodeJS
 * AWS EC2/ AWS RDS
 * Python/Flask/Selenium/Beautiful Soup
